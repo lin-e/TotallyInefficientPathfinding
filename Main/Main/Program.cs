@@ -53,6 +53,7 @@ namespace Main
         }
         int[] FindEnd()
         {
+            return new int[] { 14, 15 }; // Set custom destination point
             for (int y = 0; y < Console.WindowHeight; y++)
             {
                 int[] currentPoint = { Console.WindowWidth - 1, y };
@@ -149,9 +150,11 @@ namespace Main
                     if (showProgress)
                     {
                         Console.SetCursorPosition(currentPoint[0], currentPoint[1]);
-                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.BackgroundColor = ConsoleColor.DarkBlue;
                         Console.Write("#");
                         Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.BackgroundColor = ConsoleColor.Black;
                     }
                 }
                 PointUpdate toReturn = new PointUpdate();
@@ -179,7 +182,7 @@ namespace Main
                     toReturn.removeSelf = false;
                     currentPoint = currentPoint.Move(possibleNext[0]);
                     allPoints.Add(currentPoint);
-                    if ((currentPoint[0] == mainPoints[1][0]) /*&& (currentPoint[1] == mainPoints[1][1])*/)
+                    if ((currentPoint[0] == mainPoints[1][0]) && (currentPoint[1] == mainPoints[1][1]))
                     {
                         toReturn.End = true;
                     }
@@ -197,7 +200,7 @@ namespace Main
                 }
                 return toReturn;
             }
-            public void Draw(ConsoleColor colour = ConsoleColor.Red)
+            public void Draw(ConsoleColor colour = ConsoleColor.Blue)
             {
                 Console.ForegroundColor = colour;
                 Console.BackgroundColor = colour;
@@ -206,6 +209,8 @@ namespace Main
                     Console.SetCursorPosition(singlePoint[0], singlePoint[1]);
                     Console.Write("#");
                 }
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.BackgroundColor = ConsoleColor.Black;
             }
         }
         public class PointUpdate
@@ -252,10 +257,10 @@ namespace Main
             {
                 "00000000000000000000000000000000000000000000000000000000000000000000000000000000",
                 "11111111111111111111111111111111111111100000000000000000000000000000000000000000",
-                "00000000000000110000000000000000000000100000000000000000111111111000111111111111",
+                "00000000000000010000000000000000000000100000000000000000111111111000111111111111",
                 "00000000000000011110000000000000000000100000000000000000100000000000100000000000",
                 "00000000000000000011110000000000000000111111111111111111111111111000100000000000",
-                "00000000000000000000001000000000000000000001000000000000000000001111111111111111",
+                "00000000000000000000010000000000000000000001000000000000000000001111111111111111",
                 "00000000000000001111111111111111111111111111111111110000000000000000010000000000",
                 "00000000000000011000000000000000000000000000001000000000000000000000011100000000",
                 "00000000000000001100000000000000000000000000001000000000000000000000000110000000",
