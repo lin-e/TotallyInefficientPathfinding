@@ -78,7 +78,6 @@ namespace Main
                 {
                     break;
                 }
-                Console.Title = allPaths.Count.ToString();
                 List<Path> toRemove = new List<Path>();
                 List<Path> toAdd = new List<Path>();
                 foreach (Path singlePath in allPaths)
