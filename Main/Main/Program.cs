@@ -22,7 +22,7 @@ namespace Main
             {
                 mainTimer.Stop();
                 testEntity.End.Draw();
-                Console.Title = string.Format("Solved map in {0}ms", mainTimer.ElapsedMilliseconds);
+                Console.Title = string.Format("Solved map in {0}ms (Length: {1})", mainTimer.ElapsedMilliseconds, testEntity.End.Length);
             }
             else
             {
@@ -35,9 +35,9 @@ namespace Main
     public class Entity
     {
         public Map parentMap;
+        public Path End;
         List<Path> allPaths = new List<Path>();
         List<int[]> usedPoints = new List<int[]>();
-        public Path End;
         public Entity(Map parentMap)
         {
             this.parentMap = parentMap;
@@ -57,7 +57,7 @@ namespace Main
         }
         int[] FindEnd()
         {
-            return new int[] { 22, 22 }; // Set custom destination point
+            return new int[] { 79, 15 }; // Set custom destination point
             for (int y = 0; y < Console.WindowHeight; y++)
             {
                 int[] currentPoint = { Console.WindowWidth - 1, y };
@@ -83,7 +83,7 @@ namespace Main
                 foreach (Path singlePath in allPaths)
                 {
                     PointUpdate newUpdate = singlePath.CalculateNext(showProgess);
-                    if (newUpdate.End)
+                    if (newUpdate.isEnd)
                     {
                         End = singlePath;
                         pathFound = true;
@@ -120,9 +120,9 @@ namespace Main
         public class Path
         {
             public Entity parentEntity;
-            public List<int[]> allPoints = new List<int[]>();
-            public int[][] mainPoints = new int[][] { new int[] { }, new int[] { } };
-            public int[] currentPoint;
+            List<int[]> allPoints = new List<int[]>();
+            int[][] mainPoints = new int[][] { new int[] { }, new int[] { } };
+            int[] currentPoint;
             public Path(Entity parentEntity)
             {
                 this.parentEntity = parentEntity;
@@ -130,6 +130,13 @@ namespace Main
                 mainPoints[1] = parentEntity.FindEnd();
                 currentPoint = mainPoints[0];
                 allPoints.Add(currentPoint);
+            }
+            public int Length
+            {
+                get
+                {
+                    return allPoints.Count;
+                }
             }
             int[][] CompilePath()
             {
@@ -190,7 +197,7 @@ namespace Main
                     allPoints.Add(currentPoint);
                     if ((currentPoint[0] == mainPoints[1][0]) && (currentPoint[1] == mainPoints[1][1]))
                     {
-                        toReturn.End = true;
+                        toReturn.isEnd = true;
                     }
                 }
                 else
@@ -225,7 +232,7 @@ namespace Main
             {
                 newPaths = new List<Path>();
             }
-            public bool End;
+            public bool isEnd;
             public List<Path> newPaths;
             public bool removeSelf;
         }
@@ -251,7 +258,7 @@ namespace Main
     public class Map
     {
         public int[][] mapEmpty = { };
-        public ConsoleColor wallColour;
+        ConsoleColor wallColour;
         public Map(ConsoleColor colourToUse = ConsoleColor.White)
         {
             wallColour = colourToUse;
@@ -312,9 +319,9 @@ namespace Main
                 "00000000000000000111000000000010000000000000001000000000111111111111000010000000",
                 "00000000000000000001110000000010000000000000001000000000000000001001111110000000",
                 "00000000000000000000011100000010000000000000001000000000000000001000000011111111",
-                "00000000000000000000000111000010000000000000001000000000000000011000000000000000",
-                "00000000001000000000000001111110000000000000001111111111111111110000000000000000",
-                "00000000001000000000000001000010000000000000000000000000000000000000000000000000",
+                "00000000000000000000000111000010000000000000001000000000000000011000000010000000",
+                "00000000001000000000000001111110000000000000001111111111111111110000000010000000",
+                "00000000001000000000000001000010000000000000000000000000000000000000000010000000",
                 "00000000001111100000000001111111111111111111111111111111000000000001111111111111",
                 "00000000001000000000000001000010000000000100000000000000000000000001000000000000",
                 "00000000001111111111111111000010000000000111111111111000000000000001000000000000",
