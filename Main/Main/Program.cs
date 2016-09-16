@@ -12,10 +12,10 @@ namespace Main
         {
             Map mainMap = new Map(ConsoleColor.White);
             //mainMap.LoadMapComplex();
-            mainMap.LoadMapGrid();
-            //mainMap.LoadMapEmpty();
+            //mainMap.LoadMapGrid();
+            mainMap.LoadMapEmpty();
             mainMap.Draw();
-            Entity testEntity = new Entity(mainMap, new int[] { 0, 0 }, new int[] { 65, 20 });
+            Entity testEntity = new Entity(mainMap, new int[] { 5, 10 }, new int[] { 10, 10 });
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
             if (testEntity.SolvePath(true))
@@ -179,6 +179,11 @@ namespace Main
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
                 PointUpdate toReturn = new PointUpdate();
+                if ((currentPoint[0] == mainPoints[1][0]) && (currentPoint[1] == mainPoints[1][1]))
+                {
+                    toReturn.isEnd = true;
+                    return toReturn;
+                }
                 Direction[] allDirections = { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
                 List<Direction> possibleNext = new List<Direction>();
                 foreach (Direction nextDirection in allDirections)
@@ -226,7 +231,7 @@ namespace Main
             {
                 Console.ForegroundColor = colour;
                 Console.BackgroundColor = colour;
-                foreach (int[] singlePoint in CompilePath())
+                foreach (int[] singlePoint in CompilePath().Distinct())
                 {
                     Console.SetCursorPosition(singlePoint[0], singlePoint[1]);
                     Console.Write("#");
