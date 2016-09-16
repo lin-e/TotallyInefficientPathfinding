@@ -11,11 +11,11 @@ namespace Main
         static void Main(string[] args)
         {
             Map mainMap = new Map(ConsoleColor.White);
-            mainMap.LoadMapComplex();
-            //mainMap.LoadMapGrid();
+            //mainMap.LoadMapComplex();
+            mainMap.LoadMapGrid();
             //mainMap.LoadMapEmpty();
             mainMap.Draw();
-            Entity testEntity = new Entity(mainMap);
+            Entity testEntity = new Entity(mainMap, new int[] { 0, 0 }, new int[] { 65, 20 });
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
             if (testEntity.SolvePath(true))
@@ -38,13 +38,19 @@ namespace Main
         public Path End;
         List<Path> allPaths = new List<Path>();
         List<int[]> usedPoints = new List<int[]>();
-        public Entity(Map parentMap)
+        int[][] customPoints = { new int[] { }, new int[] { } };
+        public Entity(Map parentMap, int[] customStart, int[] customEnd)
         {
             this.parentMap = parentMap;
+            customPoints[0] = customStart;
+            customPoints[1] = customEnd;
         }
         int[] FindStart()
         {
-            //return new int[] { 5, 20 }; // Set custom start point
+            if (!((customPoints[0][0] == customPoints[1][0]) && (customPoints[0][1] == customPoints[1][1])))
+            {
+                return customPoints[0];
+            }
             for (int y = 0; y < Console.WindowHeight; y++)
             {
                 int[] currentPoint = { 0, y };
@@ -57,7 +63,10 @@ namespace Main
         }
         int[] FindEnd()
         {
-            return new int[] { 79, 15 }; // Set custom destination point
+            if (!((customPoints[0][0] == customPoints[1][0]) && (customPoints[0][1] == customPoints[1][1])))
+            {
+                return customPoints[1];
+            }
             for (int y = 0; y < Console.WindowHeight; y++)
             {
                 int[] currentPoint = { Console.WindowWidth - 1, y };
@@ -135,7 +144,7 @@ namespace Main
             {
                 get
                 {
-                    return allPoints.Count;
+                    return allPoints.Distinct().Count();
                 }
             }
             int[][] CompilePath()
