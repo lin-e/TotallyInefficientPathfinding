@@ -11,10 +11,22 @@ namespace Main
         static void Main(string[] args)
         {
             Map mainMap = new Map(ConsoleColor.White);
-            //mainMap.LoadMapComplex();
-            //mainMap.LoadMapGrid();
-            //mainMap.LoadMapEmpty();
-            mainMap.LoadMapMaze();
+            int mazeMode = 3;
+            switch (mazeMode)
+            {
+                case 0:
+                    mainMap.LoadMapComplex();
+                    break;
+                case 1:
+                    mainMap.LoadMapGrid();
+                    break;
+                case 2:
+                    mainMap.LoadMapEmpty();
+                    break;
+                case 3:
+                    mainMap.LoadMapMaze();
+                    break;
+            }
             mainMap.Draw();
             Entity testEntity = new Entity(mainMap, new int[] { 1, 1 }, new int[] { 78, 23 });
             Stopwatch mainTimer = new Stopwatch();
@@ -90,6 +102,14 @@ namespace Main
         }
         public bool SolvePath(bool showProgess, bool allowDiagonal)
         {
+            if (!(parentMap.mapEmpty.Any(FindStart().SequenceEqual)))
+            {
+                return false;
+            }
+            if (!(parentMap.mapEmpty.Any(FindEnd().SequenceEqual)))
+            {
+                return false;
+            }
             allPaths.Add(new Path(this));
             bool pathFound = false;
             while (!pathFound)
