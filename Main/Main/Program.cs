@@ -13,12 +13,13 @@ namespace Main
             Map mainMap = new Map(ConsoleColor.White);
             //mainMap.LoadMapComplex();
             //mainMap.LoadMapGrid();
-            mainMap.LoadMapEmpty();
+            //mainMap.LoadMapEmpty();
+            mainMap.LoadMapMaze();
             mainMap.Draw();
-            Entity testEntity = new Entity(mainMap, new int[] { 5, 10 }, new int[] { 10, 10 });
+            Entity testEntity = new Entity(mainMap, new int[] { 1, 1 }, new int[] { 78, 23 });
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
-            if (testEntity.SolvePath(true))
+            if (testEntity.SolvePath(true, false))
             {
                 mainTimer.Stop();
                 testEntity.End.Draw();
@@ -29,6 +30,16 @@ namespace Main
                 mainTimer.Stop();
                 Console.Title = string.Format("Could not solve map in {0}ms", mainTimer.ElapsedMilliseconds);
             }
+            int[] entityStart = testEntity.FindStart();
+            int[] entityEnd = testEntity.FindEnd();
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.BackgroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(entityStart[0], entityStart[1]);
+            Console.Write("#");
+            Console.SetCursorPosition(entityEnd[0], entityEnd[1]);
+            Console.Write("#");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.BackgroundColor = ConsoleColor.Black;
             Console.ReadLine();
         }
     }
@@ -45,7 +56,7 @@ namespace Main
             customPoints[0] = customStart;
             customPoints[1] = customEnd;
         }
-        int[] FindStart()
+        public int[] FindStart()
         {
             if (!((customPoints[0][0] == customPoints[1][0]) && (customPoints[0][1] == customPoints[1][1])))
             {
@@ -61,7 +72,7 @@ namespace Main
             }
             return new int[] { 0, 0 };
         }
-        int[] FindEnd()
+        public int[] FindEnd()
         {
             if (!((customPoints[0][0] == customPoints[1][0]) && (customPoints[0][1] == customPoints[1][1])))
             {
@@ -77,7 +88,7 @@ namespace Main
             }
             return new int[] { 0, 0 };
         }
-        public bool SolvePath(bool showProgess = false)
+        public bool SolvePath(bool showProgess, bool allowDiagonal)
         {
             allPaths.Add(new Path(this));
             bool pathFound = false;
@@ -91,7 +102,7 @@ namespace Main
                 List<Path> toAdd = new List<Path>();
                 foreach (Path singlePath in allPaths)
                 {
-                    PointUpdate newUpdate = singlePath.CalculateNext(showProgess);
+                    PointUpdate newUpdate = singlePath.CalculateNext(showProgess, allowDiagonal);
                     if (newUpdate.isEnd)
                     {
                         End = singlePath;
@@ -163,7 +174,7 @@ namespace Main
                 toReturn.allPoints.Add(toReturn.currentPoint);
                 return toReturn;
             }
-            public PointUpdate CalculateNext(bool showProgress = false)
+            public PointUpdate CalculateNext(bool showProgress, bool allowDiagonal)
             {
                 if (!(parentEntity.usedPoints.Any(new int[] { currentPoint[0], currentPoint[1] }.SequenceEqual)))
                 {
@@ -184,7 +195,15 @@ namespace Main
                     toReturn.isEnd = true;
                     return toReturn;
                 }
-                Direction[] allDirections = { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
+                Direction[] allDirections = null;
+                if (allowDiagonal)
+                {
+                    allDirections = new Direction[] { Direction.Up, Direction.Down, Direction.Left, Direction.Right, Direction.UpLeft, Direction.UpRight, Direction.DownLeft, Direction.DownRight };
+                }
+                else
+                {
+                    allDirections = new Direction[] { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
+                }
                 List<Direction> possibleNext = new List<Direction>();
                 foreach (Direction nextDirection in allDirections)
                 {
@@ -265,6 +284,14 @@ namespace Main
                     return new int[] { origin[0] - 1, origin[1] };
                 case Direction.Right:
                     return new int[] { origin[0] + 1, origin[1] };
+                case Direction.UpLeft:
+                    return new int[] { origin[0] - 1, origin[1] - 1 };
+                case Direction.UpRight:
+                    return new int[] { origin[0] + 1, origin[1] + 1 };
+                case Direction.DownLeft:
+                    return new int[] { origin[0] - 1, origin[1] + 1 };
+                case Direction.DownRight:
+                    return new int[] { origin[0] + 1, origin[1] + 1 };
             }
             return null;
         }
@@ -347,36 +374,49 @@ namespace Main
                 "00000000000000000000000000000000000000000000000000000000011111111111111111111111",
                 "00000000000000000000000000000000000000000000000000000000000000000000000000000000",
             };
-            /*
+            for (int y = 0; y < 25; y++)
+            {
+                for (int x = 0; x < 80; x++)
+                {
+                    if (mapLoad[y][x].ToString() == "1")
+                    {
+                        newPoints.Add(new int[] { x, y });
+                    }
+                }
+            }
+            mapEmpty = newPoints.ToArray();
+        }
+        public void LoadMapMaze()
+        {
+            List<int[]> newPoints = new List<int[]>();
             string[] mapLoad =
             {
                 "00000000000000000000000000000000000000000000000000000000000000000000000000000000",
-                "11111100000000000000000000000000000000000000000000000000000000000000000000000000",
-                "00000110000000000000000000000000000000000000000000000000000000000000000000000000",
-                "00000011111111111111111111111111111111111111111111111111111111111111111111111100",
-                "00000000000000000011110000000000000000111111111111111111111111111000100000000000",
-                "00000000000000000000010000000000000000000001000000000000000000001111111111111111",
-                "00000000000000001111111111111111111111111111111111110000000000000000010000000000",
-                "00000000000000011000000000000010000000000000001000000000000000000000011100000000",
-                "00000000000000001100000000000010000000000000001000000000000000000000000110000000",
-                "00000000000000000111000000000010000000000000001000000000111111111111000010000000",
-                "00000000000000000001110000000010000000000000001000000000000000001001111110000000",
-                "00000000000000000000011100000010000000000000001000000000000000001000000011111111",
-                "00000000000000000000000111000010000000000000001000000000000000011000000000000000",
-                "00000000001000000000000001111110000000000000001111111111111111110000000000000000",
-                "00000000001000000000000001000010000000000000000000000000000000000000000000000000",
-                "00000000001111100000000001111111111111111111111111111111000000000001111111111111",
-                "00000000001000000000000001000010000000000100000000000000000000000001000000000000",
-                "00000000001111111111111111000010000000000111111111111000000000000001000000000000",
-                "00000000000000000000000000000010000000000000000000011111111111111111111111100000",
-                "00000000000000000000000000000011111111110000000000000000000000000000000000000000",
-                "00000000000000000000000000000000000000011111111111111111110000000000000000000000",
-                "00000000000000000000000000000000000000000000000000000000010000000000000000000000",
-                "00000000000000000000001111111111111111111111111111111111110000000000000000000000",
-                "00000000000000000000000000000000000000000000000000000000011111111111111111111111",
+                "01111111111111111111111111000001111111111111111111001111111111111111111111111110",
+                "00001000000010000000000001000001000000000000000001001000000000100000000001001010",
+                "00001000000000000000000000000001000000010000100001001001000000100000000001001010",
+                "00001111111111111111111111111111111110010000100001001011111111111111111101001010",
+                "00000000000000000000000000000000000000011001100001001001000000000000100101001010",
+                "00111111111111111111111111111111111111110001001001001001000011111110100101001010",
+                "00101010100100000000000000000000000000000001001001001000000010000010100101001010",
+                "00101010100111111111111111111111111111111111001001111111111010000010100111001010",
+                "00101010100100000000000000000000000000000001001000000000001010000010100000001010",
+                "00100010100100111111111111111111111111111111001000000000001010000010111111111000",
+                "00100000100100000000000000000000100000000001111111111111111010000010000000001010",
+                "00100000000100000000000000000000100000000000000000000000000010000011111100101010",
+                "00111111100111111111111111111110100111111111111001000000000010000000000100101010",
+                "00000000100000000000000000000010100100000000001001000111111111111011000100101010",
+                "01111100111111111111111111111010100111111100001001010100000000000010000100101010",
+                "01000000100000000000000000001010000000000101001001010101111111111110000100101010",
+                "01011111111111111111111110001011111111111101001111111101000000000011110100101010",
+                "01000000000000000000000010001000000000000001000000000001011111100000010100101010",
+                "01001111111111111111110010001111111111111111111111111111000000100000010100101010",
+                "01001000000000000000000010001000000000000000000000000000000111111111110100111010",
+                "01001111111111111111111111111111111111111111111111010000000000000000000100000010",
+                "01000000000000000000000000000000000000000000000001010011111111111111111111111110",
+                "01111111111111111111111111111111111111111111111111110000000000000000000000000010",
                 "00000000000000000000000000000000000000000000000000000000000000000000000000000000",
             };
-            */
             for (int y = 0; y < 25; y++)
             {
                 for (int x = 0; x < 80; x++)
@@ -454,6 +494,10 @@ namespace Main
         Up,
         Down,
         Left,
-        Right
+        Right,
+        UpLeft,
+        UpRight,
+        DownLeft,
+        DownRight
     }
 }
