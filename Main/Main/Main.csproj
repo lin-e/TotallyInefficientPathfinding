@@ -41,6 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entity.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Maps\Map.cs" />
+    <Compile Include="Maps\Preset.cs" />
+    <Compile Include="Path.cs" />
+    <Compile Include="PointUpdate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
