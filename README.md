@@ -7,3 +7,7 @@ Not really supposed to be shared or used by anyone (since (much) more efficient 
 Solving a maze
 
 ![](https://raw.githubusercontent.com/lin-e/TotallyInefficientPathfinding/master/Images/VMb7kW2.png)
+
+Diagonal pathfinding demo
+
+![](https://raw.githubusercontent.com/lin-e/TotallyInefficientPathfinding/master/Images/UcynPEE.png)
