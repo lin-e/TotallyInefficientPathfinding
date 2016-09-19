@@ -11,7 +11,7 @@ namespace Main
         static void Main(string[] args)
         {
             Map mainMap = new Map(ConsoleColor.White);
-            int mazeMode = 3;
+            int mazeMode = 4;
             switch (mazeMode)
             {
                 case 0:
@@ -26,12 +26,15 @@ namespace Main
                 case 3:
                     mainMap.LoadMapMaze();
                     break;
+                case 4:
+                    mainMap.mapEmpty = Preset.Load(Preset.EXAMPLE_02).ToArray();
+                    break;
             }
             mainMap.Draw();
             Entity testEntity = new Entity(mainMap, new int[] { 1, 1 }, new int[] { 78, 23 });
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
-            if (testEntity.SolvePath(true, false))
+            if (testEntity.SolvePath(true, true))
             {
                 mainTimer.Stop();
                 testEntity.End.Draw();

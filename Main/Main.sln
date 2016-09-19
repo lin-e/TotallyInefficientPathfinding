@@ -5,6 +5,8 @@ VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Main", "Main\Main.csproj", "{17DC70FE-52C8-4474-ACC6-E5B4322A88DD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PrimsMazeGenerationTest", "PrimsMazeGenerationTest\PrimsMazeGenerationTest.csproj", "{BED192E3-C197-447C-8E30-853D2EF8BB16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{17DC70FE-52C8-4474-ACC6-E5B4322A88DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17DC70FE-52C8-4474-ACC6-E5B4322A88DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17DC70FE-52C8-4474-ACC6-E5B4322A88DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BED192E3-C197-447C-8E30-853D2EF8BB16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BED192E3-C197-447C-8E30-853D2EF8BB16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BED192E3-C197-447C-8E30-853D2EF8BB16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BED192E3-C197-447C-8E30-853D2EF8BB16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
