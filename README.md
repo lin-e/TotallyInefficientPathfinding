@@ -11,3 +11,9 @@ Solving a maze
 Diagonal pathfinding demo
 
 ![](https://raw.githubusercontent.com/lin-e/TotallyInefficientPathfinding/master/Images/UcynPEE.png)
+
+Generating and solving a maze
+
+![](https://raw.githubusercontent.com/lin-e/TotallyInefficientPathfinding/master/Images/auaZ6sS.png)
+
+![](https://raw.githubusercontent.com/lin-e/TotallyInefficientPathfinding/master/Images/wK8cb4G.png)
