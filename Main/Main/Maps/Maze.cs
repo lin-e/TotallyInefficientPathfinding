@@ -1,25 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading;
 
-namespace PrimsMazeGenerationTest
+namespace Main
 {
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WindowWidth = 81;
-            Console.WindowHeight = 25;
-            while (true)
-            {
-                Maze testMap = new Maze(100);
-                testMap.Generate(true);
-                Thread.Sleep(500);
-            }
-        }
-    }
     public class Maze
     {
         public List<string> allLines = new List<string>();
@@ -98,7 +82,7 @@ namespace PrimsMazeGenerationTest
         public void Preview()
         {
             string x = string.Join("", allLines).Replace("1", " ").Replace("0", "█");
-            Console.Write(x.Remove(x.Length -1, 1));
+            Console.Write(x.Remove(x.Length - 1, 1));
         }
 
         List<int[]> getSurrouding(int[] currentPoint)
@@ -195,31 +179,6 @@ namespace PrimsMazeGenerationTest
                     }
                 }
             }
-        }
-    }
-    public enum Direction
-    {
-        Up,
-        Down,
-        Left,
-        Right
-    }
-    public static class Extensions
-    {
-        public static int[] Move(this int[] origin, Direction direction)
-        {
-            switch (direction)
-            {
-                case Direction.Up:
-                    return new int[] { origin[0], origin[1] - 1 };
-                case Direction.Down:
-                    return new int[] { origin[0], origin[1] + 1 };
-                case Direction.Left:
-                    return new int[] { origin[0] - 1, origin[1] };
-                case Direction.Right:
-                    return new int[] { origin[0] + 1, origin[1] };
-            }
-            return null;
         }
     }
 }

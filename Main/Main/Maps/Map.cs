@@ -60,6 +60,12 @@ namespace Main
         {
             mapEmpty = Preset.Load(Preset.MAZE_01).ToArray();
         }
+        public void LoadNewMaze()
+        {
+            Maze newMaze = new Maze(100);
+            newMaze.Generate();
+            mapEmpty = Preset.Load(newMaze.allLines.ToArray()).ToArray();
+        }
         public void Draw()
         {
             Console.ForegroundColor = wallColour;
