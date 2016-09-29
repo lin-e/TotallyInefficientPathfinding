@@ -60,10 +60,10 @@ namespace Main
         {
             mapEmpty = Preset.Load(Preset.MAZE_01).ToArray();
         }
-        public void LoadNewMaze()
+        public void LoadNewMaze(int upperBound = 128)
         {
-            Maze newMaze = new Maze(100);
-            newMaze.Generate();
+            Maze newMaze = new Maze(upperBound);
+            newMaze.Generate(true);
             mapEmpty = Preset.Load(newMaze.allLines.ToArray()).ToArray();
         }
         public void Draw()

@@ -8,7 +8,7 @@ namespace PrimsMazeGenerationTest
 {
     public static class TestConfig
     {
-        public static bool showProgressDelay = true;
+        public static bool showProgressDelay = false;
         public static int progressDelayTime = 25;
     }
     class Program
@@ -81,11 +81,11 @@ namespace PrimsMazeGenerationTest
                 }
                 foreach (Arc singleArc in possibleArcs)
                 {
-                    if (singleArc.absDistance < currentMinDistance)
+                    if (singleArc.pointDistance < currentMinDistance)
                     {
-                        currentMinDistance = singleArc.absDistance;
+                        currentMinDistance = singleArc.pointDistance;
                         currentArc = singleArc;
-                        if (singleArc.absDistance == 0)
+                        if (singleArc.pointDistance == 0)
                         {
                             break;
                         }
@@ -94,9 +94,6 @@ namespace PrimsMazeGenerationTest
                 if (TestConfig.showProgressDelay)
                 {
                     timeCheck.Stop();
-                }
-                if (TestConfig.showProgressDelay)
-                {
                     int elapsedDifference = TestConfig.progressDelayTime - (int)timeCheck.ElapsedMilliseconds;
                     if (elapsedDifference < 0)
                     {
@@ -190,14 +187,14 @@ namespace PrimsMazeGenerationTest
         {
             public int[] startNode;
             public int[] endNode;
-            public int absDistance;
+            public int pointDistance;
             public Direction moveDir;
             public Arc() { }
             public Arc(Maze parentMaze, int[] startNode, int[] endNode)
             {
                 this.startNode = startNode;
                 this.endNode = endNode;
-                absDistance = Math.Abs(parentMaze.nodeWeight[startNode[0], startNode[1]] - parentMaze.nodeWeight[endNode[0], endNode[1]]);
+                pointDistance = parentMaze.nodeWeight[startNode[0], startNode[1]] - parentMaze.nodeWeight[endNode[0], endNode[1]];
                 if (startNode[0] == endNode[0])
                 {
                     if (startNode[1] > endNode[1])

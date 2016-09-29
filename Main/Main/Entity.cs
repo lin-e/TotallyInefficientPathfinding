@@ -104,7 +104,10 @@ namespace Main
                 }
                 toRemove.Clear();
                 toAdd.Clear();
-                Thread.Sleep(threadDelay);
+                if (showProgess)
+                {
+                    Thread.Sleep(threadDelay);
+                }
             }
             return pathFound;
         }
