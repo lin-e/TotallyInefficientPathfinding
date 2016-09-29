@@ -85,10 +85,6 @@ namespace PrimsMazeGenerationTest
                     {
                         currentMinDistance = singleArc.pointDistance;
                         currentArc = singleArc;
-                        if (singleArc.pointDistance == 0)
-                        {
-                            break;
-                        }
                     }
                 }
                 if (TestConfig.showProgressDelay)

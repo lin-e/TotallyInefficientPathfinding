@@ -59,10 +59,6 @@ namespace Main
                     {
                         currentMinDistance = singleArc.pointDistance;
                         currentArc = singleArc;
-                        if (singleArc.pointDistance == 0)
-                        {
-                            break;
-                        }
                     }
                 }
                 activeNodes.Add(currentArc.endNode);
