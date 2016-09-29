@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 
 namespace Main
 {
@@ -50,7 +50,7 @@ namespace Main
             }
             return new int[] { 0, 0 };
         }
-        public bool SolvePath(bool showProgess, bool allowDiagonal)
+        public bool SolvePath(bool showProgess, bool allowDiagonal, ConsoleColor progressColour = ConsoleColor.DarkBlue, int threadDelay = 0)
         {
             if (!(parentMap.mapEmpty.Any(FindStart().SequenceEqual)))
             {
@@ -72,7 +72,7 @@ namespace Main
                 List<Path> toAdd = new List<Path>();
                 foreach (Path singlePath in allPaths)
                 {
-                    PointUpdate newUpdate = singlePath.CalculateNext(showProgess, allowDiagonal);
+                    PointUpdate newUpdate = singlePath.CalculateNext(showProgess, allowDiagonal, progressColour);
                     if (newUpdate.isEnd)
                     {
                         End = singlePath;
@@ -104,6 +104,7 @@ namespace Main
                 }
                 toRemove.Clear();
                 toAdd.Clear();
+                Thread.Sleep(threadDelay);
             }
             return pathFound;
         }

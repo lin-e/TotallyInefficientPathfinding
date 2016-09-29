@@ -39,7 +39,7 @@ namespace Main
             Entity testEntity = new Entity(mainMap, new int[] { 1, 1 }, new int[] { 79, 23 });
             Stopwatch mainTimer = new Stopwatch();
             mainTimer.Start();
-            if (testEntity.SolvePath(false, false))
+            if (testEntity.SolvePath(true, false, ConsoleColor.DarkRed, 25))
             {
                 mainTimer.Stop();
                 testEntity.End.Draw();

@@ -41,7 +41,7 @@ namespace Main
             toReturn.allPoints.Add(toReturn.currentPoint);
             return toReturn;
         }
-        public PointUpdate CalculateNext(bool showProgress, bool allowDiagonal)
+        public PointUpdate CalculateNext(bool showProgress, bool allowDiagonal, ConsoleColor progressColour)
         {
             if (!(parentEntity.usedPoints.Any(new int[] { currentPoint[0], currentPoint[1] }.SequenceEqual)))
             {
@@ -50,8 +50,8 @@ namespace Main
             if (showProgress)
             {
                 Console.SetCursorPosition(currentPoint[0], currentPoint[1]);
-                Console.ForegroundColor = ConsoleColor.DarkBlue;
-                Console.BackgroundColor = ConsoleColor.DarkBlue;
+                Console.ForegroundColor = progressColour;
+                Console.BackgroundColor = progressColour;
                 Console.Write("#");
                 Console.ForegroundColor = ConsoleColor.Gray;
                 Console.BackgroundColor = ConsoleColor.Black;

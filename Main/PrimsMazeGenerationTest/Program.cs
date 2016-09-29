@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Diagnostics;
 using System.Threading;
 
 namespace PrimsMazeGenerationTest
 {
+    public static class TestConfig
+    {
+        public static bool showProgressDelay = true;
+        public static int progressDelayTime = 25;
+    }
     class Program
     {
         static void Main(string[] args)
@@ -14,7 +19,7 @@ namespace PrimsMazeGenerationTest
             Console.WindowHeight = 25;
             while (true)
             {
-                Maze testMap = new Maze(100);
+                Maze testMap = new Maze(int.MaxValue / 1000);
                 testMap.Generate(true);
                 Thread.Sleep(500);
             }
@@ -69,6 +74,11 @@ namespace PrimsMazeGenerationTest
                 }
                 Arc currentArc = new Arc();
                 int currentMinDistance = upperBound + 2;
+                Stopwatch timeCheck = new Stopwatch();
+                if (TestConfig.showProgressDelay)
+                {
+                    timeCheck.Start();
+                }
                 foreach (Arc singleArc in possibleArcs)
                 {
                     if (singleArc.absDistance < currentMinDistance)
@@ -79,6 +89,22 @@ namespace PrimsMazeGenerationTest
                         {
                             break;
                         }
+                    }
+                }
+                if (TestConfig.showProgressDelay)
+                {
+                    timeCheck.Stop();
+                }
+                if (TestConfig.showProgressDelay)
+                {
+                    int elapsedDifference = TestConfig.progressDelayTime - (int)timeCheck.ElapsedMilliseconds;
+                    if (elapsedDifference < 0)
+                    {
+                        Thread.Sleep(0);
+                    }
+                    else
+                    {
+                        Thread.Sleep(elapsedDifference);
                     }
                 }
                 activeNodes.Add(currentArc.endNode);
