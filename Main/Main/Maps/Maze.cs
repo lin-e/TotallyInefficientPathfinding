@@ -44,7 +44,7 @@ namespace Main
             while (activeNodes.Count < (nodeWidth * nodeHeight))
             {
                 List<Arc> possibleArcs = new List<Arc>();
-                foreach (int[] singleNode in activeNodes)
+                foreach (int[] singleNode in activeNodes.Except(deadNodes))
                 {
                     foreach (int[] newNode in getSurrouding(singleNode))
                     {
@@ -84,10 +84,6 @@ namespace Main
         List<int[]> getSurrouding(int[] currentPoint)
         {
             List<int[]> possiblePoints = new List<int[]>();
-            if (deadNodes.Any(currentPoint.SequenceEqual))
-            {
-                return possiblePoints;
-            }
             Direction[] possibleDirections = { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
             List<Direction> toSkip = new List<Direction>();
             if (currentPoint[0] == 0)

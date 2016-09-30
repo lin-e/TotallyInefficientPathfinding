@@ -10,8 +10,8 @@ namespace Main
     {
         static void Main(string[] args)
         {
-            Console.WindowWidth = 81;
-            Console.WindowHeight = 25;
+            Console.WindowWidth = 101;
+            Console.WindowHeight = 51;
             bool keepLooping = true;
             while (keepLooping)
             {
@@ -45,7 +45,7 @@ namespace Main
                         break;
                 }
                 mainMap.Draw();
-                Entity testEntity = new Entity(mainMap, new int[] { 1, 1 }, new int[] { 79, 23 });
+                Entity testEntity = new Entity(mainMap, new int[] { 1, 1 }, new int[] { Console.WindowWidth - 2, Console.WindowHeight - 2 });
                 Stopwatch mainTimer = new Stopwatch();
                 mainTimer.Start();
                 if (testEntity.SolvePath(true, false, ConsoleColor.DarkCyan, 1))
@@ -71,7 +71,7 @@ namespace Main
                 Console.BackgroundColor = ConsoleColor.Black;
                 if (keepLooping)
                 {
-                    Thread.Sleep(1000);
+                    Thread.Sleep(3000);
                 }
             }
             Console.ReadLine();

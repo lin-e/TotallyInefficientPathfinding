@@ -65,7 +65,7 @@ namespace PrimsMazeGenerationTest
             while (activeNodes.Count < (nodeWidth * nodeHeight))
             {
                 List<Arc> possibleArcs = new List<Arc>();
-                foreach (int[] singleNode in activeNodes)
+                foreach (int[] singleNode in activeNodes.Except(deadNodes))
                 {
                     foreach (int[] newNode in getSurrouding(singleNode))
                     {
@@ -74,30 +74,12 @@ namespace PrimsMazeGenerationTest
                 }
                 Arc currentArc = new Arc();
                 int currentMinDistance = upperBound + 2;
-                Stopwatch timeCheck = new Stopwatch();
-                if (TestConfig.showProgressDelay)
-                {
-                    timeCheck.Start();
-                }
                 foreach (Arc singleArc in possibleArcs)
                 {
                     if (singleArc.pointDistance < currentMinDistance)
                     {
                         currentMinDistance = singleArc.pointDistance;
                         currentArc = singleArc;
-                    }
-                }
-                if (TestConfig.showProgressDelay)
-                {
-                    timeCheck.Stop();
-                    int elapsedDifference = TestConfig.progressDelayTime - (int)timeCheck.ElapsedMilliseconds;
-                    if (elapsedDifference < 0)
-                    {
-                        Thread.Sleep(0);
-                    }
-                    else
-                    {
-                        Thread.Sleep(elapsedDifference);
                     }
                 }
                 activeNodes.Add(currentArc.endNode);
@@ -117,16 +99,12 @@ namespace PrimsMazeGenerationTest
         public void Preview()
         {
             string x = string.Join("", allLines).Replace("1", " ").Replace("0", "█");
-            Console.Write(x.Remove(x.Length -1, 1));
+            Console.Write(x.Remove(x.Length - 1, 1));
         }
 
         List<int[]> getSurrouding(int[] currentPoint)
         {
             List<int[]> possiblePoints = new List<int[]>();
-            if (deadNodes.Any(currentPoint.SequenceEqual))
-            {
-                return possiblePoints;
-            }
             Direction[] possibleDirections = { Direction.Up, Direction.Down, Direction.Left, Direction.Right };
             List<Direction> toSkip = new List<Direction>();
             if (currentPoint[0] == 0)
